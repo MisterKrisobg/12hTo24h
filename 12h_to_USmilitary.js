@@ -25,4 +25,6 @@ function convertTimeUS(String) {
         console.log("The value you entered isn't valid or is already in the 24h time or US military time format.");
     }
 }
-    
+// Example
+convertTimeUS("11:34 AM");
+// Expected result is 1134
