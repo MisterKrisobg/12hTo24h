@@ -9,49 +9,61 @@ function convertTime(String) {
     */
     let AM = String.includes("AM");
     let PM = String.includes("PM");
-    // For ante-merridian (Sun hasn't went past the merridian yet AKA before noon)
+    // For Ante-Merridian (Sun hasn't went past the merridian yet AKA before noon)
     if (AM == true) {
         let time = String.replace("AM", "");
         time = time.replace (":", "");
         Time = +time
-        if (Time >= 1200 && Time < 1300) {
-            Time -= 1200;
-            Time = Time.toString();
-            Time = Time.padStart(2, "0")
-            Time = "00:" + Time
-        }
-        else if (Time >= 1000 && Time <= 1159) {
-            Time = Time.toString();
-            T = ":" + time.slice(2, 4);
-            Time = Time.slice(0, 2) + T;
+        if (Time <1300) {
+            if (Time >= 1200) {
+                Time -= 1200;
+                Time = Time.toString();
+                Time = Time.padStart(2, "0")
+                Time = "00:" + Time
+                console.log(Time);
+            }
+                else if (Time >= 1000 && Time <= 1159) {
+                Time = Time.toString();
+                T = ":" + time.slice(2, 4);
+                Time = Time.slice(0, 2) + T;
+                console.log(Time);
+            }
+            else {
+                Time = Time.toString();
+                T = ":" + time.slice (1, 3);
+                Time = Time.slice (0, 1) + T;
+                console.log(Time);
+            }
         }
         else {
-            Time = Time.toString();
-            T = ":" + time.slice (1, 3);
-            Time = Time.slice (0, 1) + T;
+            console.log("Invalid input.");
         }
-        console.log(Time)
     }
 
-    // FOR Post-Merridian (Sun has went past the middle of the merridian AKA afternoon)
+    // For Post-Merridian (Sun has went past the middle of the merridian AKA afternoon)
     else if (PM == true) {
         let time = String.replace("PM", "");
         time = time.replace (":", "");
         time = +time
-        if (time >= 1200) {
-            time = time.toString();
-            Time = time.toString();
-            T = ":" + time.slice(2, 4);
-            Time = Time.slice(0, 2) + T;
-            console.log(Time)
+        if (time < 1300) {
+            if (time >= 1200) {
+                time = time.toString();
+                Time = time.toString();
+                T = ":" + time.slice(2, 4);
+                Time = Time.slice(0, 2) + T;
+                console.log(Time)
+            }
+            else {
+                time += 1200
+                time = time.toString();
+                Time = time.toString();
+                T = ":" + time.slice(2, 4);
+                Time = Time.slice(0, 2) + T;
+                console.log(Time)
+            }
         }
         else {
-            time += 1200
-            time = time.toString();
-            Time = time.toString();
-            T = ":" + time.slice(2, 4);
-            Time = Time.slice(0, 2) + T;
-            console.log(Time)
+            console.log("Invalid input.");
         }
     }
     else {
@@ -59,5 +71,6 @@ function convertTime(String) {
     }
 }
 // Example 
-convertTime("11:59 PM")
+convertTime("11:59 AM")
 // Expected result is 23:59
+
