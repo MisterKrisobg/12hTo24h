@@ -1,4 +1,3 @@
-// 12 hour to US Military Time converter
 function convertTimeUS(String) {
     let AM = String.includes("AM");
     let PM = String.includes("PM");
@@ -11,18 +10,36 @@ function convertTimeUS(String) {
             timE = timE.toString();
             timE = "0" + timE;
             Time = timE;
+            console.log(Time);
         }
-        console.log(Time);
-    }
+        else if (timE >= 1200 && timE <=1259) {
+            timE = timE.toString();
+            timE = timE.slice(2, 4);
+            timE = "00" + timE;
+            Time = timE;
+            console.log(Time);
+        }
+        else if (timE > 1259){
+            console.log("Invalid time entered.")
+        }
+    } 
     else if (PM == true) {
         let time = String.replace("PM", "");
         time = time.replace(":", "");
         Time = +time;
-        Time += 1200;
-        console.log(Time);
+        if (Time <= 1159) {
+            Time += 1200;
+            console.log(Time);
+        }
+        else if (Time >=1200 && Time <= 1259) {
+            console.log(Time);
+        }
+        else {
+            console.log("Invalid time entered.")
+        }
     }
     else {
-        console.log("The value you entered isn't valid or is already in the 24h time or US military time format.");
+        console.log("The value you entered isn't valid.");
     }
 }
 // Example
