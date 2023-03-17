@@ -1,76 +1,71 @@
-function convertTime(String) {
-    /*Thinking about adding wider acceptance   E.g.
-    if (String.includes("AM") === true || String.includes("A.M.") === true || String.includes("am") === true || String.includes("a.m.") === true) {
+function convertTime(input) {
+    /* REMINDER: Thinking about adding wider acceptance   e.g.
+    if (input.includes("AM") === true || input.includes("A.M.") === true || input.includes("am") === true || input.includes("a.m.") === true) {
         var AM = true
     }
-    else if (String.includes("PM") === true || String.includes("P.M.") === true || String.includes("pm") === true || String.includes("p.m.") === true){
+    else if (input.includes("PM") === true || input.includes("P.M.") === true || input.includes("pm") === true || input.includes("p.m.") === true){
         var PM = true
     } Then again, I suppose it isn't really nessecary since if it is used it will most likely employ a selection dropdown to pick am or pm
     */
-    let AM = String.includes("AM");
-    let PM = String.includes("PM");
-    // For Ante-Merridian (Sun hasn't went past the merridian yet AKA before noon)
-    if (AM == true) {
-        let time = String.replace("AM", "");
-        time = time.replace (":", "");
-        Time = +time
-        if (Time <1300) {
-            if (Time >= 1200) {
-                Time -= 1200;
-                Time = Time.toString();
-                Time = Time.padStart(2, "0")
-                Time = "00:" + Time
-                console.log(Time);
-            }
-                else if (Time >= 1000 && Time <= 1159) {
-                Time = Time.toString();
-                T = ":" + time.slice(2, 4);
-                Time = Time.slice(0, 2) + T;
-                console.log(Time);
-            }
-            else {
-                Time = Time.toString();
-                T = ":" + time.slice (1, 3);
-                Time = Time.slice (0, 1) + T;
-                console.log(Time);
-            }
-        }
-        else {
-            console.log("Invalid input.");
-        }
+    let AM = input.includes("AM");
+    let PM = input.includes("PM");
+    // Input check
+    if (!AM && !PM) {
+        console.log("Make sure the value you enter contains AM or PM.");
+        return;
     }
-
-    // For Post-Merridian (Sun has went past the middle of the merridian AKA afternoon)
-    else if (PM == true) {
-        let time = String.replace("PM", "");
-        time = time.replace (":", "");
-        time = +time
-        if (time < 1300) {
-            if (time >= 1200) {
-                time = time.toString();
-                Time = time.toString();
-                T = ":" + time.slice(2, 4);
-                Time = Time.slice(0, 2) + T;
-                console.log(Time)
-            }
-            else {
-                time += 1200
-                time = time.toString();
-                Time = time.toString();
-                T = ":" + time.slice(2, 4);
-                Time = Time.slice(0, 2) + T;
-                console.log(Time)
-            }
-        }
-        else {
-            console.log("Invalid input.");
-        }
+    if (AM && PM) {
+        console.log("Make sure the value you enter does not contain both AM or PM.");
+        return;
     }
-    else {
-        console.log("The value you entered isn't valid or is already in the 24h time format.");
+    // For Ante Meridiem 
+    if (AM) {
+        // Removes time formatting so the value can be turned into an int
+        // and then have its validity verified
+        let time = input.replace("AM", "");
+        time = time.replace (":", "");
+        time = +time;
+        // AM and PM can't go past 12:59 (i.e. in this case 1259)
+        if (time >= 1300 || time <= 59) {
+            console.log("Invalid input.");
+            return;
+        }
+        // In my code 12:00 - 12:59 AM is 00:00 - 00:59 in the 24h format
+        if (time >= 1200) {
+            time -= 1200;
+            time = time.toString();
+            time = time.padStart(2, "0")
+            time = "00:" + time
+         }
+        else {
+            time = time.toString();
+            time = time.slice(0, (time.length - 2)) + ":" + time.slice((time.length - 2), time.length);
+        }
+        console.log(time);
+        return time;
+    }
+    // For Post Meridiem
+    else if (PM) {
+        // Removes time formatting so the value can be turned into an int
+        // and then have its validity verified
+        let time = input.replace("PM", "");
+        time = time.replace (":", "");
+        time = +time;
+        // AM and PM can't go past 12:59 (i.e. in this case 1259)
+        if (time >= 1300 || time <= 59) { 
+            console.log("Invalid input.");
+            return;
+        }
+        if (!(time >= 1200 && time <= 1300)) {
+        // adds 12 hours if time isn't 12 PM
+        time += 1200;
+        }
+        time = time.toString();
+        time = time.slice(0, (time.length - 2)) + ":" + time.slice((time.length - 2), time.length);
+        console.log(time);
+        return time;
     }
 }
 // Example 
-convertTime("11:59 AM")
-// Expected result is 23:59
-
+convertTime("12:59 PM")
+// Expected output is 23:59 
